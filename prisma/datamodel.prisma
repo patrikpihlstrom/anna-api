@@ -1,0 +1,14 @@
+type User {
+  id: ID! @id
+  name: String!
+  key: String
+}
+
+type Job {
+  id: ID! @id
+  container: String
+  driver: String!
+  site: String!
+  status: String! @default(value: "pending")
+  log: String
+}
