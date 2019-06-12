@@ -7,6 +7,7 @@ type User {
 type Job {
   id: ID! @id
   container: String
+  worker: String
   driver: String!
   site: String!
   status: String! @default(value: "pending")
