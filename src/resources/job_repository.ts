@@ -1,12 +1,11 @@
-import {Job} from "../models/job";
+import {Job} from '../models/job';
 import {
 	BatchPayload,
-	ID_Input,
 	JobCreateInput,
 	JobUpdateInput,
-	JobWhereInput,
+	JobWhereInput, JobWhereUniqueInput,
 	prisma
-} from "../../prisma/generated/prisma-client";
+} from '../../prisma/generated/prisma-client';
 
 export class JobRepository {
 	async get(filter: JobWhereInput): Promise<Job[]> {
@@ -21,7 +20,7 @@ export class JobRepository {
 		return await prisma.createJob(job);
 	}
 
-	async update(data: JobUpdateInput, where: {id: ID_Input}): Promise<Job> {
+	async update(data: JobUpdateInput, where: JobWhereUniqueInput): Promise<Job> {
 		return await prisma.updateJob({data: data, where: where});
 	}
 

@@ -8,6 +8,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use(router);
-let handle = app.listen(5000, () => console.log('started Anna API on port 5000'));
-export{app}
-export{handle}
+let handle = null;
+
+if (process.env.NODE_ENV !== 'test') {
+	handle = app.listen(5000, () => console.log('started Anna API on port 5000'));
+}
+export {app, handle}

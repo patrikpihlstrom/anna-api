@@ -1,6 +1,7 @@
 import {Response, Request} from 'express';
-import {JobRepository} from "../resources/job_repository";
-import {getJobRequests} from "../models/job";
+import {JobRepository} from '../resources/job_repository';
+import {getJobRequests, getJobUpdateInput, getJobWhereUniqueInput} from '../helpers/job';
+import {JobUpdateInput} from '../../prisma/generated/prisma-client';
 
 class JobController {
 	private repository: JobRepository;
@@ -27,6 +28,17 @@ class JobController {
 		}
 
 		res.status(200).send(jobs);
+	};
+
+	update = async (req: Request, res: Response) => {
+		let where = getJobWhereUniqueInput(req);
+		let data = getJobUpdateInput(req);
+		if (!where || !data) {
+			res.status(400).send('bad request');
+			return false;
+		}
+
+		let update = this.repository.update(data, where);
 	};
 }
 

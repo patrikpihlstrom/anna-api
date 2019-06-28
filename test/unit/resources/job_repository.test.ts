@@ -2,45 +2,45 @@ import {JobRepository} from '../../../src/resources/job_repository';
 import {
 	JobCreateInput, JobUpdateInput,
 	prisma as db
-} from "../../../prisma/generated/prisma-client";
+} from '../../../prisma/generated/prisma-client';
+import {Job} from '../../../src/models/job';
 
 describe('Job Repository', () => {
 	test('get no job', async () => {
 		const repository = new EmptyMockRepository();
-		let jobs = await repository.get({});
+		let jobs: Job[] = await repository.get({});
 		expect(jobs.length).toBe(0);
 	});
 
 	test('get a job', async () => {
 		const repository = new SingleMockRepository();
-		let jobs = await repository.get({});
+		let jobs: Job[] = await repository.get({});
 		expect(jobs.length).toBe(1);
 	});
 
 	test('create a job', async () => {
 		let repository = new EmptyMockRepository();
-		let job = await repository.create(new JobRequestMock());
+		let job: Job = await repository.create(new JobRequestMock());
 		expect(job.driver).toBe('chrome');
 		expect(job.site).toBe('test');
 		expect(job.status).toBe('pending');
-		let jobs = await repository.get({});
+		let jobs: Job[] = await repository.get({});
 		expect(jobs.length).toBe(1);
 	});
 
 	test('update a job', async () => {
 		let repository = new EmptyMockRepository();
-		let job = await repository.create(new JobRequestMock());
+		let job: Job = await repository.create(new JobRequestMock());
 		expect(job.driver).toBe('chrome');
 		expect(job.site).toBe('test');
 		expect(job.status).toBe('pending');
 		await repository.update(new JobUpdateMock(), {id: job.id});
-		let jobs = await repository.get({id: job.id});
-		expect(jobs[0].site).toBe(new JobUpdateMock().site);
+		expect((await repository.get({id: job.id}))[0].site).toBe(new JobUpdateMock().site);
 	});
 
 	test('delete a job', async () => {
 		let repository = new EmptyMockRepository();
-		let job = await repository.create(new JobRequestMock());
+		let job: Job = await repository.create(new JobRequestMock());
 		expect(job.driver).toBe('chrome');
 		expect(job.site).toBe('test');
 		expect(job.status).toBe('pending');

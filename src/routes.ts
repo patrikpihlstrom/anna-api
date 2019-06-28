@@ -6,5 +6,6 @@ const router = express.Router();
 router.get('/', Job.index);
 router.get('/get', Job.index);
 router.post('/push', Job.push);
+router.post('/update', Job.update);
 
 export {router};
