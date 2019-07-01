@@ -8,6 +8,15 @@ describe('GET /get', () => {
 		expect(response.status).toBe(200);
 	});
 
+	test('returns a job filtered by id', async () => {
+		await request(app).post('/push').send(new JobPushSingleMock());
+		const job = await request(app).post('/push').send(new JobPushSingleMock());
+		expect(job.body).toHaveLength(1);
+		const response = await request(app).get('/get').send({where: {id: job.body[0]}});
+		expect(response.body).toHaveLength(1);
+		expect(response.body[0].id).toEqual(job.body[0]);
+	});
+
 	test('returns a maximum of 64 jobs (by default), sorted by updated_at', async () => {
 		const response = await request(app).get('/get');
 		expect(response.status).toBe(200);
@@ -77,6 +86,28 @@ describe('POST /update', () => {
 
 	afterEach(async () => {
 		return Promise.all([await db.deleteManyJobs(), await db.deleteManyUsers()]);
+	});
+});
+
+describe('POST /rm', () => {
+	test('removes a job', async () => {
+		const job = (await request(app).post('/push').send(new JobPushSingleMock())).body[0];
+		let jobs = await request(app).get('/get');
+		expect(jobs.body).toHaveLength(1);
+		const response = await request(app).post('/rm').send({where: {id: job}});
+		expect(response.status).toBe(200);
+		jobs = await request(app).get('/get').send({where: {id: job}});
+		expect(jobs.body).toHaveLength(0);
+	});
+
+	test('removes all jobs', async () => {
+		await request(app).post('/push').send(new JobPushFirefoxChromeMock());
+		let jobs = await request(app).get('/get').send({where: {}});
+		expect(jobs.body).toHaveLength(2);
+		const response = await request(app).post('/rm').send({where: {}});
+		expect(response.status).toBe(200);
+		jobs = await request(app).get('/get').send({where: {}});
+		expect(jobs.body).toHaveLength(0);
 	});
 });
 

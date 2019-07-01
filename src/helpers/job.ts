@@ -7,18 +7,18 @@ export function getJobWhereInput(req: Request): JobWhereInput {
 }
 
 export function getJobWhereInputFromBody(body: any): JobWhereInput {
-	let input = {};
+	let where = {};
 	if (body != null) {
 		for (let key in body) {
 			if (!body.hasOwnProperty(key)) {
 				continue;
 			}
 
-			input[key] = body[key];
+			where[key] = body[key];
 		}
 	}
 
-	return input;
+	return where;
 }
 
 export function getJobWhereUniqueInput(req: Request): JobWhereUniqueInput {

@@ -1,7 +1,6 @@
 import {Response, Request} from 'express';
 import {JobRepository} from '../resources/job_repository';
-import {getJobRequests, getJobUpdateInput, getJobWhereUniqueInput} from '../helpers/job';
-import {JobUpdateInput} from '../../prisma/generated/prisma-client';
+import {getJobRequests, getJobUpdateInput, getJobWhereUniqueInput, getJobWhereInput} from '../helpers/job';
 
 class JobController {
 	private repository: JobRepository;
@@ -11,15 +10,15 @@ class JobController {
 	}
 
 	index = async (req: Request, res: Response) => {
-		const jobs = await this.repository.get({});
+		const where = getJobWhereInput(req);
+		const jobs = await this.repository.get(where);
 		res.json(jobs);
 	};
 
 	push = async (req: Request, res: Response) => {
 		let jobRequests = getJobRequests(req);
 		if (jobRequests.length == 0) {
-			res.status(400).send('specify at least one driver & one site');
-			return false;
+			return res.status(400).send('specify at least one driver & one site');
 		}
 
 		let jobs = [];
@@ -34,8 +33,7 @@ class JobController {
 		let where = getJobWhereUniqueInput(req);
 		let data = getJobUpdateInput(req);
 		if (!where || !data) {
-			res.status(400).send('bad request');
-			return false;
+			return res.status(400).send('bad request');
 		}
 
 		try {
@@ -43,11 +41,29 @@ class JobController {
 			if (update) {
 				return res.status(200).send(update);
 			}
-			return res.status(500).send(update);
 		}
 		catch (e) {
-			res.status(400).send(e);
+			return res.status(400).send(e.message);
 		}
+		return res.status(500).send('unknown error occurred');
+	};
+
+	rm = async (req: Request, res: Response) => {
+		let where = getJobWhereInput(req);
+		if (!where) {
+			return res.status(400).send('bad request');
+		}
+
+		try {
+			let rm = await this.repository.delete(where);
+			if (rm) {
+				return res.status(200).send(rm);
+			}
+		}
+		catch (e) {
+			res.status(500).send(e.message);
+		}
+		return res.status(500).send('unknown error occurred');
 	};
 }
 
