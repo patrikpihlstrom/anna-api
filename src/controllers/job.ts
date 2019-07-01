@@ -38,7 +38,16 @@ class JobController {
 			return false;
 		}
 
-		let update = this.repository.update(data, where);
+		try {
+			let update = await this.repository.update(data, where);
+			if (update) {
+				return res.status(200).send(update);
+			}
+			return res.status(500).send(update);
+		}
+		catch (e) {
+			res.status(400).send(e);
+		}
 	};
 }
 

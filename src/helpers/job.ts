@@ -3,28 +3,30 @@ import {JobRequest} from '../models/job';
 import {JobUpdateInput, JobWhereInput, JobWhereUniqueInput} from '../../prisma/generated/prisma-client';
 
 export function getJobWhereInput(req: Request): JobWhereInput {
-	return getJobWhereInputFromBody(req.body);
+	return getJobWhereInputFromBody(req.body.where);
 }
 
 export function getJobWhereInputFromBody(body: any): JobWhereInput {
 	let input = {};
-	for (let key in body) {
-		if (!body.hasOwnProperty(key)) {
-			continue;
-		}
+	if (body != null) {
+		for (let key in body) {
+			if (!body.hasOwnProperty(key)) {
+				continue;
+			}
 
-		input[key] = body[key];
+			input[key] = body[key];
+		}
 	}
 
 	return input;
 }
 
 export function getJobWhereUniqueInput(req: Request): JobWhereUniqueInput {
-	return getJobWhereUniqueInputFromBody(req.body);
+	return getJobWhereUniqueInputFromBody(req.body.where);
 }
 
 export function getJobWhereUniqueInputFromBody(body: any): JobWhereUniqueInput {
-	if (body.hasOwnProperty('id') && typeof body.id == 'string' || typeof body.id == 'number') {
+	if (body != null && (body.hasOwnProperty('id') && typeof body.id == 'string' || typeof body.id == 'number')) {
 		return {id: body.id};
 	}
 
@@ -32,7 +34,7 @@ export function getJobWhereUniqueInputFromBody(body: any): JobWhereUniqueInput {
 }
 
 export function getJobUpdateInput(req: Request): JobUpdateInput {
-	return getJobUpdateInputFromBody(req.body);
+	return getJobUpdateInputFromBody(req.body.data);
 }
 
 export function getJobUpdateInputFromBody(body: any): JobUpdateInput {
@@ -77,13 +79,17 @@ export function getJobRequestsFromBody(body: any): JobRequest[] {
 }
 
 function parseJobRequestParam(param: any): string[] {
+	let params = [];
 	if (param instanceof Array) {
 		for (let i = 0; i < param.length; ++i) {
 			if (typeof param[i] != 'string') {
 				return [];
 			}
+
+			params.push(param[i]);
 		}
 	} else {
 		return [param];
 	}
+	return params;
 }

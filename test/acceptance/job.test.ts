@@ -41,8 +41,7 @@ describe('POST /push', () => {
 	});
 
 	test('creates several jobs & returns the ids', async () => {
-		const mock = new JobPushFirefoxChromeMock();
-		const response = await request(app).post('/push').send(mock);
+		const response = await request(app).post('/push').type('form').send(new JobPushFirefoxChromeMock());
 		expect(response.status).toBe(200);
 		expect(response.body.length).toBe(2);
 		expect(typeof response.body[0] == 'string').toBe(true);
@@ -66,11 +65,10 @@ describe('POST /update', () => {
 
 	test('updates a job', async () => {
 		const job = (await request(app).post('/push').send(new JobPushSingleMock())).body[0];
-		let update = new JobUpdateMock();
-		const updateResponse = await request(app).post('/update').send({where: {id: job.id}, data: update});
+		const updateResponse = await request(app).post('/update').send({where: {id: job}, data: new JobUpdateMock()});
 		expect(updateResponse.status).toBe(200);
-		expect(updateResponse.body.length).toBe(1);
-		const response = await request(app).get('/get');
+		expect(updateResponse.body.id).toBe(job);
+		expect(updateResponse.body.status).toBe(new JobUpdateMock().status);
 	});
 
 	beforeEach(async () => {
