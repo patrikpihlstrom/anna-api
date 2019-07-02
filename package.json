@@ -4,7 +4,8 @@
  "description": "",
  "main": "index.js",
  "scripts": {
-  "test": "NODE_ENV=test jest"
+  "test": "NODE_ENV=test jest",
+  "run": "node src/server.js"
  },
  "keywords": [],
  "author": "",

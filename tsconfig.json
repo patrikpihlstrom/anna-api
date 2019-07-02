@@ -7,7 +7,8 @@
 	"moduleResolution": "node",
 	"lib": [
 	  "es2015",
-	  "esnext.asynciterable"
+	  "esnext.asynciterable",
+	  "dom"
 	],
 	"sourceMap": true
   },
@@ -15,6 +16,7 @@
 	"node_modules"
   ],
   "include": [
+	"src/*.ts",
 	"*.ts"
   ]
 }
