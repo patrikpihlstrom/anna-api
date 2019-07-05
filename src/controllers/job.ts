@@ -10,13 +10,13 @@ class JobController {
 	}
 
 	index = async (req: Request, res: Response) => {
-		const where = getJobWhereInput(req);
-		const jobs = await this.repository.get(where);
+		let where = await getJobWhereInput(req);
+		let jobs = await this.repository.get(where);
 		res.json(jobs);
 	};
 
 	push = async (req: Request, res: Response) => {
-		let jobRequests = getJobRequests(req);
+		let jobRequests = await getJobRequests(req);
 		if (jobRequests.length == 0) {
 			return res.status(400).send('specify at least one driver & one site');
 		}
@@ -30,11 +30,7 @@ class JobController {
 	};
 
 	update = async (req: Request, res: Response) => {
-		let where = getJobWhereUniqueInput(req);
-		let data = getJobUpdateInput(req);
-		if (!where || !data) {
-			return res.status(400).send('bad request');
-		}
+		let where = getJobWhereUniqueInput(req), data = getJobUpdateInput(req);
 
 		try {
 			let update = await this.repository.update(data, where);
@@ -64,6 +60,10 @@ class JobController {
 			res.status(500).send(e.message);
 		}
 		return res.status(500).send('unknown error occurred');
+	};
+
+	tasks = async (req: Request, res: Response) => {
+		let namespace = getTaskNamespace(req);
 	};
 }
 
