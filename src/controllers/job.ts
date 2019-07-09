@@ -61,10 +61,6 @@ class JobController {
 		}
 		return res.status(500).send('unknown error occurred');
 	};
-
-	tasks = async (req: Request, res: Response) => {
-		let namespace = getTaskNamespace(req);
-	};
 }
 
 export default new JobController();
