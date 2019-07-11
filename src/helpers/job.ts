@@ -79,6 +79,22 @@ export function getJobRequestsFromBody(body: any): JobRequest[] {
 	return jobRequests;
 }
 
+export function getWorker(req: Request): string|boolean {
+	let worker = req.header('worker');
+	if (typeof worker != 'string' || worker.length <= 0) {
+		return false;
+	}
+
+	const notAllowed = '!"\'\\@£$|[]≈±#€%&/()=?`´;:,.*¨ \n\t';
+	for (let i = 0; i < worker.length; ++i) {
+		if (notAllowed.indexOf(worker[i]) > -1) {
+			return false;
+		}
+	}
+
+	return worker;
+}
+
 function parseJobRequestParam(param: any): string[] {
 	let values = [];
 	if (param instanceof Array) {

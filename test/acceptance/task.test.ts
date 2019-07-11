@@ -3,12 +3,12 @@ import {app} from '../../src/server';
 
 describe('GET /tasks', () => {
 	test('returns 400 if no namespace was provided', async () => {
-		const response = await request(app).get('/tasks');
+		const response = await request(app).get('/task');
 		expect(response.status).toBe(400);
 	});
 
 	test('returns 200 Ok', async () => {
-		const response = await request(app).get('/tasks').send({namespace: 'anna_unittasks'});
+		const response = await request(app).get('/task/anna_unittasks');
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('tasks');
 		expect(response.body.tasks).toHaveLength(12);
