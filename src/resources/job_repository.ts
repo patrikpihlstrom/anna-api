@@ -8,7 +8,7 @@ import {
 } from '../../prisma/generated/prisma-client';
 
 export class JobRepository {
-	async get(filter: JobWhereInput): Promise<Job[]> {
+	static async get(filter: JobWhereInput): Promise<Job[]> {
 		if (filter == null || filter == {}) {
 			return await prisma.jobs({});
 		}
@@ -16,15 +16,15 @@ export class JobRepository {
 		return await prisma.jobs({where: filter});
 	}
 
-	async create(job: JobCreateInput): Promise<Job> {
+	static async create(job: JobCreateInput): Promise<Job> {
 		return await prisma.createJob(job);
 	}
 
-	async update(data: JobUpdateInput, where: JobWhereUniqueInput): Promise<Job> {
+	static async update(data: JobUpdateInput, where: JobWhereUniqueInput): Promise<Job> {
 		return await prisma.updateJob({data: data, where: where});
 	}
 
-	async delete(where: JobWhereInput): Promise<BatchPayload> {
+	static async delete(where: JobWhereInput): Promise<BatchPayload> {
 		return await prisma.deleteManyJobs(where);
 	}
 }

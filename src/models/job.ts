@@ -1,5 +1,4 @@
-import {ID_Input, ID_Output, JobCreateInput, Maybe, String} from '../../prisma/generated/prisma-client';
-import {Request} from 'express';
+import {ID_Input, JobCreateInput, Maybe, String} from '../../prisma/generated/prisma-client';
 
 export class Job {
 	id?: Maybe<ID_Input>;

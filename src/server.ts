@@ -7,7 +7,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
-app.use(router);
+app.use('/', router);
+app.use('/job', router);
+app.use('/task', router);
 let handle = null;
 
 if (process.env.NODE_ENV !== 'test') {

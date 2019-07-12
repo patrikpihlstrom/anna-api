@@ -4,7 +4,7 @@ import {JobCreateInput, JobUpdateInput, prisma as db} from '../../prisma/generat
 
 describe('GET /get', () => {
 	test('returns 200 Ok', async () => {
-		const response = await request(app).get('/job/get');
+		const response = await JobRepository.get('/job/get');
 		expect(response.status).toBe(200);
 	});
 
@@ -12,18 +12,18 @@ describe('GET /get', () => {
 		await request(app).post('/push').send(new JobPushSingleMock());
 		const job = await request(app).post('/job/push').send(new JobPushSingleMock());
 		expect(job.body).toHaveLength(1);
-		const response = await request(app).get('/job/get').send({where: {id: job.body[0]}});
+		const response = await JobRepository.get('/job/get').send({where: {id: job.body[0]}});
 		expect(response.body).toHaveLength(1);
 		expect(response.body[0].id).toEqual(job.body[0]);
 	});
 
 	test('returns a maximum of 64 jobs (by default), sorted by updated_at', async () => {
-		const response = await request(app).get('/job/get');
+		const response = await JobRepository.get('/job/get');
 		expect(response.status).toBe(200);
 	});
 
 	test('returns a maximum of n jobs where n is a parameter passed by the user, sorted by updated_at', async () => {
-		const response = await request(app).get('/job/get');
+		const response = await JobRepository.get('/job/get');
 		expect(response.status).toBe(200);
 	});
 
@@ -92,21 +92,21 @@ describe('POST /update', () => {
 describe('POST /rm', () => {
 	test('removes a job', async () => {
 		const job = (await request(app).post('/job/push').send(new JobPushSingleMock())).body[0];
-		let jobs = await request(app).get('/job/get');
+		let jobs = await JobRepository.get('/job/get');
 		expect(jobs.body).toHaveLength(1);
 		const response = await request(app).post('/job/rm').send({where: {id: job}});
 		expect(response.status).toBe(200);
-		jobs = await request(app).get('/job/get').send({where: {id: job}});
+		jobs = await JobRepository.get('/job/get').send({where: {id: job}});
 		expect(jobs.body).toHaveLength(0);
 	});
 
 	test('removes all jobs', async () => {
 		await request(app).post('/job/push').send(new JobPushFirefoxChromeMock());
-		let jobs = await request(app).get('/job/get').send({where: {}});
+		let jobs = await JobRepository.get('/job/get').send({where: {}});
 		expect(jobs.body).toHaveLength(2);
 		const response = await request(app).post('/job/rm').send({where: {}});
 		expect(response.status).toBe(200);
-		jobs = await request(app).get('/job/get').send({where: {}});
+		jobs = await JobRepository.get('/job/get').send({where: {}});
 		expect(jobs.body).toHaveLength(0);
 	});
 });

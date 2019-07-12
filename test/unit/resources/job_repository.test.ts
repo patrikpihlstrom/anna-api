@@ -8,44 +8,44 @@ import {Job} from '../../../src/models/job';
 describe('Job Repository', () => {
 	test('get no job', async () => {
 		const repository = new EmptyMockRepository();
-		let jobs: Job[] = await repository.get({});
+		let jobs: Job[] = await JobRepository.get({});
 		expect(jobs.length).toBe(0);
 	});
 
 	test('get a job', async () => {
 		const repository = new SingleMockRepository();
-		let jobs: Job[] = await repository.get({});
+		let jobs: Job[] = await JobRepository.get({});
 		expect(jobs.length).toBe(1);
 	});
 
 	test('create a job', async () => {
 		let repository = new EmptyMockRepository();
-		let job: Job = await repository.create(new JobRequestMock());
+		let job: Job = await JobRepository.create(new JobRequestMock());
 		expect(job.driver).toBe('chrome');
 		expect(job.site).toBe('test');
 		expect(job.status).toBe('pending');
-		let jobs: Job[] = await repository.get({});
+		let jobs: Job[] = await JobRepository.get({});
 		expect(jobs.length).toBe(1);
 	});
 
 	test('update a job', async () => {
 		let repository = new EmptyMockRepository();
-		let job: Job = await repository.create(new JobRequestMock());
+		let job: Job = await JobRepository.create(new JobRequestMock());
 		expect(job.driver).toBe('chrome');
 		expect(job.site).toBe('test');
 		expect(job.status).toBe('pending');
-		await repository.update(new JobUpdateMock(), {id: job.id});
-		expect((await repository.get({id: job.id}))[0].site).toBe(new JobUpdateMock().site);
+		await JobRepository.update(new JobUpdateMock(), {id: job.id});
+		expect((await JobRepository.get({id: job.id}))[0].site).toBe(new JobUpdateMock().site);
 	});
 
 	test('delete a job', async () => {
 		let repository = new EmptyMockRepository();
-		let job: Job = await repository.create(new JobRequestMock());
+		let job: Job = await JobRepository.create(new JobRequestMock());
 		expect(job.driver).toBe('chrome');
 		expect(job.site).toBe('test');
 		expect(job.status).toBe('pending');
-		await repository.delete({id: job.id});
-		let jobs = await repository.get({id: job.id});
+		await JobRepository.delete({id: job.id});
+		let jobs = await JobRepository.get({id: job.id});
 		expect(jobs.length).toBe(0);
 	});
 
@@ -67,7 +67,7 @@ class EmptyMockRepository extends JobRepository {
 class SingleMockRepository extends JobRepository {
 	constructor() {
 		super();
-		this.create({driver: 'chrome', site: 'test'});
+		JobRepository.create({driver: 'chrome', site: 'test'});
 	}
 }
 

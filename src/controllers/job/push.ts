@@ -18,7 +18,7 @@ class Push {
 
 		let jobs = [];
 		for (let i = 0; i < jobRequests.length; ++i) {
-			jobs.push((await this.repository.create(jobRequests[i])).id);
+			jobs.push((await JobRepository.create(jobRequests[i])).id);
 		}
 
 		res.status(200).send(jobs);

@@ -13,7 +13,7 @@ class Update {
 		let where = getJobWhereUniqueInput(req), data = getJobUpdateInput(req);
 
 		try {
-			let update = await this.repository.update(data, where);
+			let update = await JobRepository.update(data, where);
 			if (update) {
 				return res.status(200).send(update);
 			}

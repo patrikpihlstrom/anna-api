@@ -46,7 +46,7 @@ var JobController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         where = job_1.getJobWhereInput(req);
-                        return [4 /*yield*/, this.repository.get(where)];
+                        return [4 /*yield*/, JobRepository.get(where)];
                     case 1:
                         jobs = _a.sent();
                         res.json(jobs);
@@ -69,7 +69,7 @@ var JobController = /** @class */ (function () {
                     case 1:
                         if (!(i < jobRequests.length)) return [3 /*break*/, 4];
                         _b = (_a = jobs).push;
-                        return [4 /*yield*/, this.repository.create(jobRequests[i])];
+                        return [4 /*yield*/, JobRepository.create(jobRequests[i])];
                     case 2:
                         _b.apply(_a, [(_c.sent()).id]);
                         _c.label = 3;
@@ -95,7 +95,7 @@ var JobController = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.repository.update(data, where)];
+                        return [4 /*yield*/, JobRepository.update(data, where)];
                     case 2:
                         update = _a.sent();
                         if (update) {

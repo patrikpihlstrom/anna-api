@@ -13,6 +13,6 @@ router.post('/job/push', Push.index);
 router.post('/job/update', Update.index);
 router.post('/job/rm', Rm.index);
 router.post('/job/reserve', Reserve.index);
-router.get('/task/:namespace', Task.tasks);
+router.get('/task/:namespace', Task.index);
 
 export {router};

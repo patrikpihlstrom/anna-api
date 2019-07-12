@@ -11,8 +11,11 @@ class Get {
 
 	index = async (req: Request, res: Response) => {
 		let where = await getJobWhereInput(req);
-		let jobs = await this.repository.get(where);
-		res.json(jobs);
+		if (!where) {
+			return res.status(400).send('unable to construct a where clause from the parameters given');
+		}
+		let jobs = await JobRepository.get(where);
+		return res.status(200).send(JSON.stringify(jobs, null, 3));
 	};
 }
 

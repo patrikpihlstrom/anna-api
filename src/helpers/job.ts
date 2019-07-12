@@ -79,17 +79,10 @@ export function getJobRequestsFromBody(body: any): JobRequest[] {
 	return jobRequests;
 }
 
-export function getWorker(req: Request): string|boolean {
-	let worker = req.header('worker');
+export function getWorker(req: Request): string | boolean {
+	let worker = validate(req.header('worker'));
 	if (typeof worker != 'string' || worker.length <= 0) {
 		return false;
-	}
-
-	const notAllowed = '!"\'\\@£$|[]≈±#€%&/()=?`´;:,.*¨ \n\t';
-	for (let i = 0; i < worker.length; ++i) {
-		if (notAllowed.indexOf(worker[i]) > -1) {
-			return false;
-		}
 	}
 
 	return worker;
@@ -109,4 +102,16 @@ function parseJobRequestParam(param: any): string[] {
 		return [param];
 	}
 	return values;
+}
+
+export function validate(str: string): string | boolean {
+	const notAllowed = '!"\'\\@£$|[]≈±#€%&/()=?`´;:,.*¨ \n\t';
+	for (let i = 0; i < str.length; ++i) {
+		let c = str[i];
+		if (notAllowed.indexOf(c) > -1) {
+			return false;
+		}
+	}
+
+	return str;
 }
