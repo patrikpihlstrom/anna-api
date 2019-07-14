@@ -1,0 +1,4 @@
+version: '0.0.1'
+services:
+  prisma:
+    image: prismagraphql/prisma:1.13
