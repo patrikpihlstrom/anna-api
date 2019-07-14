@@ -12,6 +12,7 @@ addons:
 before_install:
   - npm install -g yarn
   - export DEBUG="*"
+  - export DEV_PRISMA_ENDPOINT="http://localhost:4466"
 install:
   - yarn
 cache:
