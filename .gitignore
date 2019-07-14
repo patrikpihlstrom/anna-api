@@ -4,3 +4,4 @@ prisma/generated
 dist
 src/*.js
 src/*/*.js
+*.swp
