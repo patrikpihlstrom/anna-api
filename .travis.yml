@@ -1,6 +1,8 @@
 language: nodejs
 sudo: required
 before_install:
+  - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+  - apt-get install -y nodejs
   # Repo for Yarn
   - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -9,7 +11,7 @@ before_install:
 cache:
   yarn: true
 before_script:
-    - yarn
-    - yarn build
+  - yarn
+  - yarn build
 script:
-    - yarn test
+  - yarn test
