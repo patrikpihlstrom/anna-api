@@ -18,8 +18,8 @@ cache:
 before_script:
   - cd prisma && docker-compose up -d
   - docker ps -a
-  - prisma generate
-  - prisma deploy
+  - ../node_modules/.bin/prisma generate
+  - ../node_modules/.bin/prisma deploy
   - cd ..
   - yarn build
 script:
