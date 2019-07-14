@@ -1,8 +1,9 @@
 language: nodejs
 
 before_script:
-    - npm run build
+    - yarn
+    - yarn build
 
 script:
-    - npm run test
+    - yarn test
 
