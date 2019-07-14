@@ -16,10 +16,10 @@ install:
 cache:
   yarn: true
 before_script:
-  - yarn build
-script:
   - docker-compose up -d
   - docker ps
   - sleep 20
   - ./node_modules/.bin/prisma deploy
+  - yarn build
+script:
   - yarn test
