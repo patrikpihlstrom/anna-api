@@ -13,4 +13,4 @@ services:
         databases:
           default:
             connector: mongo
-            uri: 'mongodb://0.0.0.0:27017/anna'
+            uri: 'mongodb://host.docker.internal:27017/anna'
