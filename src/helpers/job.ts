@@ -1,6 +1,11 @@
 import {Request} from 'express';
-import {JobRequest} from '../models/job';
-import {JobUpdateInput, JobWhereInput, JobWhereUniqueInput} from '../../prisma/generated/prisma-client';
+import {Job, JobRequest} from '../models/job';
+import {
+	JobNullablePromise,
+	JobUpdateInput,
+	JobWhereInput,
+	JobWhereUniqueInput
+} from '../../prisma/generated/prisma-client';
 
 export function getJobWhereInput(req: Request): JobWhereInput {
 	if (!req.body.hasOwnProperty('where')) {
@@ -18,6 +23,9 @@ export function getJobWhereInputFromBody(body: any): JobWhereInput {
 			}
 
 			where[key] = body[key];
+			if (typeof body[key] != 'string' && body[key].length == 1) {
+				where[key] = where[key][0];
+			}
 		}
 	}
 
@@ -114,4 +122,14 @@ export function validate(str: string): string | boolean {
 	}
 
 	return str;
+}
+
+export function getDiff(pre: Job, post: Job): string[] {
+	let diff = [];
+	Object.keys(pre).forEach(key => {
+		if (pre[key] != post[key]) {
+			diff.push(key);
+		}
+	});
+	return diff
 }

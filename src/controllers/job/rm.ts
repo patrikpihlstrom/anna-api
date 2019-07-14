@@ -16,7 +16,7 @@ class Rm {
 		}
 
 		try {
-			let rm = await JobRepository.delete(where);
+			let rm = await this.repository.delete(where);
 			if (rm) {
 				return res.status(200).send(rm);
 			}

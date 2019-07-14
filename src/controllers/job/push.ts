@@ -1,6 +1,6 @@
 import {Response, Request} from 'express';
 import {JobRepository} from '../../resources/job_repository';
-import {getJobRequests, getJobUpdateInput, getJobWhereUniqueInput, getJobWhereInput} from '../../helpers/job';
+import {getJobRequests} from '../../helpers/job';
 
 
 class Push {
@@ -18,7 +18,8 @@ class Push {
 
 		let jobs = [];
 		for (let i = 0; i < jobRequests.length; ++i) {
-			jobs.push((await JobRepository.create(jobRequests[i])).id);
+			let job = await this.repository.create(jobRequests[i]);
+			jobs.push(job.id);
 		}
 
 		res.status(200).send(jobs);

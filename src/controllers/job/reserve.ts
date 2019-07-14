@@ -16,7 +16,7 @@ class Reserve {
 		}
 
 		let where = getJobWhereInput(req);
-		let jobs = await JobRepository.get(where);
+		let jobs = await this.repository.get(where);
 
 		if (jobs.length <= 0) {
 			return res.status(404).send('couldn\'t find any matching jobs');
@@ -26,7 +26,7 @@ class Reserve {
 		let data = {worker: worker, status: 'reserved'};
 		for (let i = 0; i < jobs.length; ++i) {
 			if (jobs[i].status == null || jobs[i].status == 'pending') {
-				let update = await JobRepository.update(data, {id: jobs[i].id});
+				let update = await this.repository.update(data, {id: jobs[i].id});
 				if (update) {
 					ids.push(jobs[i].id);
 				}

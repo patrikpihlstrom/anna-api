@@ -12,13 +12,4 @@ type Job {
   site: String!
   status: String! @default(value: "pending")
   log: String
-  history: [Diff!]! @relation(name: "History")
-}
-
-type Diff {
-	id: ID! @id
-	job: Job @relation(name: "History" link: INLINE)
-	field: String!
-	pre: String!
-	post: String!
 }
