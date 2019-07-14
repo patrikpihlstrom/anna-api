@@ -19,6 +19,8 @@ before_script:
   - cd prisma && docker-compose up -d
   - docker ps -a
   - ../node_modules/.bin/prisma generate
+  - sleep 5
+  - docker ps -a
   - ../node_modules/.bin/prisma deploy
   - cd ..
   - yarn build
