@@ -11,6 +11,7 @@ addons:
       - g++-4.8
 before_install:
   - npm install -g yarn
+  - set -x PRISMA_MANAGEMENT_API_SECRET "my-secret"
 install:
   - yarn
 cache:
