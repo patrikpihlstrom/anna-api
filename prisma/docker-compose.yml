@@ -3,6 +3,7 @@ services:
   prisma:
     image: prismagraphql/prisma:1.34
     restart: always
+    network_mode: host
     ports:
     - "4466:4466"
     environment:
@@ -13,4 +14,4 @@ services:
         databases:
           default:
             connector: mongo
-            uri: 'mongodb://host.docker.internal:27017/anna'
+            uri: 'mongodb://localhost:27017/anna'
