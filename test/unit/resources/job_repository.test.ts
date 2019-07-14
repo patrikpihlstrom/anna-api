@@ -1,5 +1,6 @@
 import {JobRepository} from '../../../src/resources/job_repository';
 import {
+	ID_Input,
 	JobCreateInput, JobUpdateInput,
 	prisma as db
 } from '../../../prisma/generated/prisma-client';
@@ -46,6 +47,20 @@ describe('Job Repository', () => {
 		expect(job.status).toBe('pending');
 		await repository.delete({id: job.id});
 		let jobs = await repository.get({id: job.id});
+		expect(jobs.length).toBe(0);
+	});
+
+	test('get multiple jobs by querying an array of ids', async () => {
+		let repository = new EmptyMockRepository();
+		let ids: ID_Input[] = [];
+		for (let i = 0; i < 10; ++i) {
+			ids.push((await repository.create({driver: 'chrome', site: 'test'})).id);
+		}
+		let jobs = await repository.get({id_in: [ids[0], ids[1]]});
+		expect(jobs.length).toBe(2);
+		jobs = await repository.get({id_in: ids});
+		expect(jobs.length).toBe(10);
+		jobs = await repository.get({id_not_in: ids});
 		expect(jobs.length).toBe(0);
 	});
 

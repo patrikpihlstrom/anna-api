@@ -133,3 +133,16 @@ export function getDiff(pre: Job, post: Job): string[] {
 	});
 	return diff
 }
+
+export function getLimit(req: Request): number {
+	if (req.params.limit != null) {
+		return Number(req.params.limit);
+	}
+	if (req.body.limit != null) {
+		return Number(req.body.limit);
+	}
+	if (req.query.limit != null) {
+		return Number(req.query.limit);
+	}
+	return 1;
+}
