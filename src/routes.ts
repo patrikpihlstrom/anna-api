@@ -5,6 +5,7 @@ import Rm from './controllers/job/rm';
 import Update from './controllers/job/update';
 import Reserve from './controllers/job/reserve';
 import Task from './controllers/task/get';
+import Graphql from './controllers/graphql';
 
 let router = express.Router();
 
@@ -14,5 +15,6 @@ router.post('/job/update', Update.index);
 router.post('/job/rm', Rm.index);
 router.post('/job/reserve/:limit', Reserve.index);
 router.get('/task/:namespace', Task.index);
+router.get('/graphql', Graphql.index);
 
 export {router};
