@@ -27,7 +27,6 @@ type Diff {
     id: ID! @id
     createdAt: DateTime @createdAt
     data: [DiffPart!]! @relation(link: INLINE)
-    time: Int
 }
 
 enum STATUS {
