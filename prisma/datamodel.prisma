@@ -1,15 +1,40 @@
 type User {
-  id: ID! @id
-  name: String!
-  key: String
+    id: ID! @id
+    name: String!
+    key: String
 }
 
 type Job {
-  id: ID! @id
-  container: String
-  worker: String
-  driver: String!
-  site: String!
-  status: String! @default(value: "pending")
-  log: String
+    id: ID! @id
+    createdAt: DateTime @createdAt
+    updatedAt: DateTime @updatedAt
+    container: String
+    worker: String
+    driver: String!
+    site: String!
+    status: STATUS! @default(value: PENDING)
+    log: String,
+    history: [Diff] @relation(link: INLINE)
+}
+
+type DiffPart {
+    id: ID! @id
+    field: String!
+    value: String!
+}
+
+type Diff {
+    id: ID! @id
+    createdAt: DateTime @createdAt
+    data: [DiffPart!]! @relation(link: INLINE)
+    time: Int
+}
+
+enum STATUS {
+    PENDING
+    STARTING
+    RUNNING
+    DONE
+    ERROR
+    STOPPED
 }
