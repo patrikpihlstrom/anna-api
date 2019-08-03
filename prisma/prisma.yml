@@ -1,4 +1,4 @@
-datamodel: datamodel.graphql
+datamodel: datamodel.prisma
 endpoint: http://localhost:4466
 
 generate:
