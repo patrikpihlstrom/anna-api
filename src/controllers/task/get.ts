@@ -6,7 +6,7 @@ class Get {
   index = async (req: Request, res: Response) => {
     const namespace = await getNamespace(req);
     if (typeof namespace == "string" && namespace.length > 0) {
-      const uri = "http://tasks.annahub.se/?namespace=";
+      const uri = "http://localhost:5001/?namespace=";
       try {
         const tasks = await request.get({ uri: uri + namespace });
         return res.status(200).send(JSON.stringify(tasks, null, 3));
