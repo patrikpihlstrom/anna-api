@@ -13,8 +13,10 @@ type Job {
     driver: String!
     site: String!
     status: STATUS! @default(value: PENDING)
-    log: String,
+    log: String
     history: [Diff] @relation(link: INLINE)
+    tasks_total: Int
+    tasks_passed: Int
 }
 
 type DiffPart {
