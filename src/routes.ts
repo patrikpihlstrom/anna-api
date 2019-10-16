@@ -5,7 +5,7 @@ import Graphql from "./controllers/graphql";
 let router = express.Router();
 
 router.get("/task/:namespace", Task.index);
-router.get("/graphql", Graphql.index);
-router.post("/graphql", Graphql.index);
+router.get("/", Graphql.index);
+router.post("/", Graphql.index);
 
 export { router };
