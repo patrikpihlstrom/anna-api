@@ -3,4 +3,5 @@ load_balancer:
   endpoint: 'http://host:port/'
   user: ''
   password: ''
-
+job:
+  life: 4
