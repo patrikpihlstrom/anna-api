@@ -17,9 +17,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use("/", router);
 app.use("/task", router);
 
-function sendJob(job) {
+async function sendJob(job) {
 	try {
-		request.post(config.load_balancer.endpoint, {body: job.id}, (error, res, body) => {
+		await request.post(config.load_balancer.endpoint, {body: job.id}, (error, res, body) => {
 			if (error) {
 				console.error(error);
 				return;
@@ -41,8 +41,8 @@ async function sendJobs() {
 		first: limit
 	});
 
-	jobs.forEach((job) => {
-		sendJob(job);
+	jobs.forEach(async (job) => {
+		await sendJob(job);
 	});
 }
 
