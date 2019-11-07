@@ -1,7 +1,9 @@
-
+port: 80
 load_balancer:
   endpoint: 'http://host:port/'
   user: ''
   password: ''
+  size: 4 # send 4 jobs at a time
+  cron: '*/30 * * * * *' # send jobs every 5 seconds as long as there's a pending job in the queue
 job:
-  life: 4
+  life: 4 # number of days a job is kept in the database

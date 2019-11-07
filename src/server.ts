@@ -7,8 +7,9 @@ import {prisma} from "../prisma/generated/prisma-client";
 import {load} from 'js-yaml';
 import * as fs from 'fs';
 import * as request from "request";
+import AnnaConfig = require("./config");
 
-const config = load(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
+const config: AnnaConfig = load(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,52 +17,45 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use("/", router);
 app.use("/task", router);
 
-let handle = null;
+function sendJob(job) {
+	try {
+		request.post(config.load_balancer.endpoint, {body: job.id}, (error, res, body) => {
+			if (error) {
+				console.error(error);
+				return;
+			}
+			console.log(body);
+		});
+	} catch (e) {
+		console.error(e.toString());
+	}
+}
 
 async function sendJobs() {
-	let first = 16;
-	if (config.hasOwnProperty('job') && config['job'].hasOwnProperty('first')) {
-		first = config['job']['first'];
-	}
-
+	let limit = config.load_balancer.limit;
 	let jobs = await prisma.jobs({
 		orderBy: 'updatedAt_ASC',
 		where: {
 			status: 'PENDING'
 		},
-		first: first
+		first: limit
 	});
 
 	jobs.forEach((job) => {
-		try {
-			request.post(config['load_balancer']['endpoint'], {body: job.id}, (error, res, body) => {
-				if (error) {
-					console.error(error);
-					return;
-				}
-				console.log(`statusCode: ${res.statusCode}`);
-				console.log(body);
-			});
-		} catch (e) {
-			console.error(e.toString());
-		}
+		sendJob(job);
 	});
 }
 
+scheduleJob(config.load_balancer.cron, async () => {
+	await sendJobs();
+});
+
 scheduleJob('* * * * *', async () => {
 	let date = new Date();
-	let jobLife = 4;
-	if (config.hasOwnProperty('job') && config['job'].hasOwnProperty('life')) {
-		jobLife = config['job']['life'];
-	}
 
-	date.setDate(date.getDate() - jobLife);
+	date.setDate(date.getDate() - config.job.life);
 	await prisma.deleteManyJobs({updatedAt_lt: date});
-
-	if (config.hasOwnProperty('load_balancer') && config['load_balancer'].hasOwnProperty('endpoint')) {
-		await sendJobs();
-	}
 });
-handle = app.listen(5000, () => console.log("Running on http://localhost:5000/"));
+let handle = app.listen(config.port, () => console.log(`Running on http://localhost:${config.port}/`));
 
 export {app, handle};
