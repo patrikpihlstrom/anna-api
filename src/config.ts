@@ -1,3 +1,6 @@
+import {load} from "js-yaml";
+import * as fs from "fs";
+
 interface AnnaConfig {
 	port: number,
 	load_balancer: {
@@ -10,6 +13,11 @@ interface AnnaConfig {
 	job: {
 		life: number
 	}
+	task_service: {
+		endpoint: string
+	}
 }
 
-export = AnnaConfig;
+const config: AnnaConfig = load(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
+
+export {AnnaConfig, config};

@@ -1,12 +1,13 @@
 import { Response, Request } from "express";
 import * as request from "request-promise-native";
 import { getNamespace } from "../../helpers/task";
+import {config} from "../../config";
 
 class Get {
   index = async (req: Request, res: Response) => {
     const namespace = await getNamespace(req);
     if (typeof namespace == "string" && namespace.length > 0) {
-      const uri = "http://localhost:5001/?namespace=";
+      const uri = `${config.task_service.endpoint}?namespace=`;
       try {
         const tasks = await request.get({ uri: uri + namespace });
         return res.status(200).send(JSON.stringify(tasks, null, 3));

@@ -4,12 +4,8 @@ let bodyParser = require("body-parser");
 import * as express from "express";
 import {router} from "./routes";
 import {prisma} from "../prisma/generated/prisma-client";
-import {load} from 'js-yaml';
-import * as fs from 'fs';
 import * as request from "request";
-import AnnaConfig = require("./config");
-
-const config: AnnaConfig = load(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
+import {config} from "./config";
 
 const app = express();
 app.use(bodyParser.json());
