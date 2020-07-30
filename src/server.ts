@@ -3,7 +3,7 @@ import {scheduleJob} from "node-schedule";
 let bodyParser = require("body-parser");
 import * as express from "express";
 import {router} from "./routes";
-import {prisma} from "../prisma/generated/prisma-client";
+import {prisma} from "../generated/prisma-client";
 import * as request from "request";
 import {config} from "./config";
 
@@ -37,9 +37,9 @@ async function sendJobs() {
 		first: limit
 	});
 
-	jobs.forEach(async (job) => {
+	for (const job of jobs) {
 		await sendJob(job);
-	});
+	}
 }
 
 scheduleJob(config.load_balancer.cron, async () => {

@@ -1,6 +1,6 @@
 .idea
 node_modules
-prisma/generated
+generated
 dist
 src/*.js
 src/*/*.js

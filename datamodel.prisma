@@ -1,7 +1,6 @@
 type User {
-    id: ID! @id
-    name: String!
-    key: String
+  id: ID! @id
+  name: String!
 }
 
 type Job {
